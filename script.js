@@ -19,5 +19,31 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
+  // Simple scroll-based reveal animations
+  const animatedSections = document.querySelectorAll(".animate-on-scroll");
+
+  if ("IntersectionObserver" in window && animatedSections.length) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("revealed");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.12,
+      }
+    );
+
+    animatedSections.forEach((section) => observer.observe(section));
+  } else {
+    // Fallback: show everything if IntersectionObserver is not supported
+    animatedSections.forEach((section) => {
+      section.classList.add("revealed");
+    });
+  }
 });
 
